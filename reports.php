@@ -61,7 +61,7 @@
 
                         <?php echo "<a href='selected-report.php?id=$id' style='text-decoration: none;' class='btn btn-info'>+ Show details</a>" ?>
 
-                        <?php echo "<a href='delete-reports.php?id=$id' style='text-decoration: none;' class='btn btn-danger'>Delete</a>" ?>
+                        <?php echo "<a href='delete-reports.php?id=$id' style='text-decoration: none;' class='btn btn-danger confirmation'>Delete</a>" ?>
                       </div>
                     </div>
                   </div>
@@ -96,4 +96,13 @@
 		include("assets/includes/footer.php")
 	?>
 </body>
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmation');
+    var confirmIt = function (e) {
+        if (!confirm('Are you sure you want to delete this report?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+</script>
 </html>

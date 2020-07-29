@@ -27,6 +27,7 @@
       $target = $resultado['target'];
       $resume = $resultado['resume'];
       $solution = $resultado["solution"];
+      $released = $resultado["released"];
   ?>
 
   <!-- Page content -->
@@ -135,13 +136,23 @@
                                                   
                 </div>
                 <hr class="my-4" />
+                <?php 
+                if(is_null($released)){
+                  echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <span class="alert-text"><strong>Warning!</strong> You are using an unavailable tool! It might not work!</span>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>';
+                }
+                ?>
                 <form>
                 <div class="col-sm-12 offset-md-3 col-md-6">
 
                     <p>Enter the target's address: </p>
 
                     <div class="form-group">
-                  <input id='target' type="text" placeholder="Example: 127.0.0.1" class="form-control is-valid" onchange="getTarget();" />
+                  <input id='target' type="text" placeholder="Example: 127.0.0.1" class="form-control is-valid" onchange="getTarget();" value="localhost"/>
                 </div>
                 </div>
                 
@@ -278,10 +289,8 @@
 
     var command = '<?php echo $cmd; ?>';
     function execute() {
-        $(".btn-default").click(function()  {
           $(".options").collapse("hide");
           $(".terminal").collapse("show");
-        });
         document.getElementById("terminal-data").innerHTML = "Loading...";
         /* GET target */
         var target = document.getElementById('target').value;

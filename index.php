@@ -84,7 +84,7 @@
                         <p class="mt-3 mb-0 text-muted text-sm">
                         </p>
 
-                    <a href="" class="btn btn-danger">Go to reports</a>
+                    <a href="reports.php" class="btn btn-danger">Go to reports</a>
                       </div>
                     </div>
                   </div>

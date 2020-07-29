@@ -22,17 +22,17 @@
 
             <form class="form-signin" method="post" action="login-validation.php">
               <div class="form-label-group">
-                <input type="text" name="host" class="form-control" required autofocus>
+                <input type="text" name="host" class="form-control" required autofocus value="localhost">
                 <label for="host">Hostname / IP address</label>
               </div>
 
 			  <div class="form-label-group">
-                <input type="text" name="user" class="form-control" required>
+                <input type="text" name="user" class="form-control" required value="kali">
                 <label for="user">User</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" name="password" class="form-control" required>
+                <input type="password" name="password" class="form-control" required value="kali">
                 <label for="password">Password</label>
               </div>
 

@@ -3,20 +3,17 @@
   $command_executed = $_POST["command_executed"];
   $report_name = $_POST["report_name"];
   $output_data = $_POST["output_data"];
-
   include('assets/includes/config.php');
   $con = getConnectionDB() or die ("Could not connect to database.");
 
-  $sql = $con->prepare("SELECT solution FROM tools WHERE name = '$tool' ");
-  
+  $sql = $con->prepare("SELECT solution FROM tools WHERE fullname = '$tool' ");
+
   if ($sql->execute()) {
       $resultados = $sql->fetchAll(PDO::FETCH_ASSOC);
       // FOREACH BEGINS
       foreach ($resultados as $resultado) {
         $solution = $resultado["solution"];
         $sql2 = $con->prepare("INSERT INTO reports (name, command, tools, output, solution, dataHour) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)");
-
-
         if ($sql2->execute(array ($tool, $command_executed, $report_name, $output_data, $solution))) {
           echo
               "

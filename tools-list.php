@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <?php 
-  	include("assets/includes/head.php"); 
-  ?>
+<?php
+include("assets/includes/head.php");
+?>
+
 <body>
 	<?php
-		include("assets/includes/header.php")
+	include("assets/includes/header.php")
 	?>
 
 	<!-- Page content -->
-    <div class="container-fluid mt--7">
-      <!-- Table -->
-      <div class="row">
-        <div class="col">
-          	<div class="card shadow">
-	            <div class="card-header bg-transparent">
-	              <h2 class="mb-0">Tools List
-					<button class="btn btn-dark btn-sm float-right" type="button" data-toggle="collapse" data-target="#collapse-filter" style="float: right;">+ Show filters</button>
-	              </h2>
+	<div class="container-fluid mt--7">
+		<!-- Table -->
+		<div class="row">
+			<div class="col">
+				<div class="card shadow">
+					<div class="card-header bg-transparent">
+						<h2 class="mb-0">Tools List
+							<button class="btn btn-dark btn-sm float-right" type="button" data-toggle="collapse" data-target="#collapse-filter" style="float: right;">+ Show filters</button>
+							<a class="btn btn-success btn-sm float-right" type="button" href="#" style="float: right;">+ Add tool</a>
+						</h2>
 
-	              
+						<div class="p-4">
+							<input type="text" class="form-control form-control-alternative" placeholder="Search..." id="sourceinput">
+						</div>
 
-	            </div>
-            		
-            	<div class="card-body">
-		            <div class="collapse" id="collapse-filter">
-					  <div class="card card-body">
-					    <?php include("assets/includes/tools-categories.php"); ?>
-					  </div>
 					</div>
 
-            		<div class="row icon-examples">
-			    	
-						<?php
-							$con = getConnectionDB() or die ("Could not connect to database.");
+					<div class="card-body">
+
+						<div class="collapse" id="collapse-filter">
+							<div class="card card-body">
+								<?php include("assets/includes/tools-categories.php"); ?>
+							</div>
+						</div>
+
+						<div class="row icon-examples" id="toolslistkali">
+
+							<?php
+							$con = getConnectionDB() or die("Could not connect to database.");
 							$sql = $con->prepare("SELECT id, name, category, category2, released, categories, avatar  FROM tools ORDER BY name;");
 							$sql->execute();
 							$resultados = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -47,15 +52,15 @@
 								$categories = $resultado['categories'];
 								$avatar = $resultado['avatar'];
 
-								if(is_null($avatar)) {
+								if (is_null($avatar)) {
 									$avatar = 'assets/img/kali.png';
 								}
-						?>
+							?>
 
-						<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 filter <?php echo $categories?>">
-							
-								<?php 
-									if(is_null($released)) {
+								<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 filter <?php echo $categories ?>">
+
+									<?php
+									if (is_null($released)) {
 										echo "
 											
 												<div class='card zoom-effect bg-white mb-3 text-white'>
@@ -66,17 +71,17 @@
 									                      <span class='h2 font-weight-bold mb-0'>$name</span>
 									                      <h5 class='card-title text-uppercase text-muted mb-0'>$category";
 
-									                  	    if (!is_null($category2)) {
-												    			echo ", $category2";
-												    		}
-												    		echo "</h5>
+										if (!is_null($category2)) {
+											echo ", $category2";
+										}
+										echo "</h5>
 									                    </div>
 									                    <div class='col-auto'>
 									                      <div class='icon icon-shape text-white rounded-circle shadow'";
 
-									                      echo " style='background-image: url($avatar); background-size: cover; background-position: center'> ";
-									                      
-									                      echo "
+										echo " style='background-image: url($avatar); background-size: cover; background-position: center'> ";
+
+										echo "
 									                      </div>
 									                    </div>
 									                  </div>
@@ -87,7 +92,7 @@
 												  	</div>
 												</div>
 										";
-									} else  {
+									} else {
 										echo "
 											<a href='selected-tool.php?id=$id' style='text-decoration: none;'>
 												<div class='card zoom-effect mb-3 text-white bg-success'>
@@ -98,17 +103,17 @@
 									                      <span class='h2 font-weight-bold mb-0 text-white'>$name</span>
 									                      <h5 class='card-title text-uppercase mb-0' style='color: #84edff;'>$category";
 
-									                  	    if (!is_null($category2)) {
-												    			echo ", $category2";
-												    		}
-												    		echo "</h5>
+										if (!is_null($category2)) {
+											echo ", $category2";
+										}
+										echo "</h5>
 									                    </div>
 									                    <div class='col-auto'>
 									                      <div class='icon icon-shape text-white rounded-circle shadow'";
 
-									                      echo " style='background-image: url($avatar); background-size: cover; background-position: center'> ";
-									                      
-									                      echo "
+										echo " style='background-image: url($avatar); background-size: cover; background-position: center'> ";
+
+										echo "
 									                      </div>
 									                    </div>
 									                  </div>
@@ -121,43 +126,50 @@
 											</a>
 										";
 									}
-								?>
+									?>
 
+								</div>
+
+							<?php
+								// FOREACH ENDS
+							}
+							?>
 						</div>
-				
-						<?php
-						// FOREACH ENDS
-								}
-						?>
 					</div>
 				</div>
-			</div>
-	<?php
-		include("assets/includes/footer.php")
-	?>
+				<?php
+				include("assets/includes/footer.php")
+				?>
 
-	<script type="text/javascript">
-		$(document).ready(function(){
+				<script type="text/javascript">
+					$(document).ready(function() {
+						$("#sourceinput").on('change keydown paste input', function() {
+							var searchtext = document.getElementById("sourceinput").value;
+							$.post("search-tools.php", {
+								"searchtext": searchtext
+							}).done(function(data) {
+								document.getElementById("toolslistkali").innerHTML = data; //Pega a resposta da pagina_que_ira_receber_o_post.php
+							}).fail(function(error) {
+								document.getElementById("toolslistkali").innerHTML = error;
+							});
+						});
+						$(".filter-button").click(function() {
+							var value = $(this).attr('data-filter');
 
-		    $(".filter-button").click(function(){
-		        var value = $(this).attr('data-filter');
-		        
-		        if(value == "all")
-		        {
-		            //$('.filter').removeClass('hidden');
-		            $('.filter').show('1000');
-		        }
-		        else
-		        {
-		//            $('.filter[filter-item="'+value+'"]').removeClass('hidden');
-		//            $(".filter").not('.filter[filter-item="'+value+'"]').addClass('hidden');
-		            $(".filter").not('.'+value).hide('3000');
-		            $('.filter').filter('.'+value).show('3000');
-		            
-		        }
-		    });
+							if (value == "all") {
+								//$('.filter').removeClass('hidden');
+								$('.filter').show('1000');
+							} else {
+								//            $('.filter[filter-item="'+value+'"]').removeClass('hidden');
+								//            $(".filter").not('.filter[filter-item="'+value+'"]').addClass('hidden');
+								$(".filter").not('.' + value).hide('3000');
+								$('.filter').filter('.' + value).show('3000');
 
-		});
-	</script>
+							}
+						});
+
+					});
+				</script>
 </body>
+
 </html>
