@@ -91,6 +91,12 @@
         </li>
 
         <li class="nav-item">
+          <a class="nav-link" href="tools-management.php">
+            <i class="ni ni-ungroup text-primary"></i> Tools Management
+          </a>
+        </li>
+
+        <li class="nav-item">
           <a class="nav-link" href="debian.php">
             <i class="ni ni-app text-red"></i> Debian
           </a>
