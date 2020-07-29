@@ -17,7 +17,7 @@ include("assets/includes/head.php");
                 <div class="card shadow">
                     <div class="card-header bg-transparent">
                         <h2 class="mb-0">Tools Management
-                            <a class="btn btn-success btn-sm float-right" type="button" href="#" style="float: right;">+ Add tool</a>
+                            <a class="btn btn-success btn-sm float-right" type="button" href="add-tool.php" style="float: right;">+ Add tool</a>
                         </h2>
 
                         <div class="p-4">
@@ -37,7 +37,7 @@ include("assets/includes/head.php");
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
-                                <tbody class="list">
+                                <tbody class="list" id="toolTable">
                                     <?php
                                     $con = getConnectionDB() or die("Could not connect to database.");
                                     $sql = $con->prepare("SELECT * FROM tools ORDER BY name;");
@@ -62,20 +62,20 @@ include("assets/includes/head.php");
                                             <th scope="row">
                                                 <div class="media align-items-center">
                                                     <a href="#" class="avatar rounded-circle mr-3">
-                                                        <img alt="<?php echo $name?>" src="<?php echo $avatar?>">
+                                                        <img alt="<?php echo $name ?>" src="<?php echo $avatar ?>">
                                                     </a>
                                                     <div class="media-body">
-                                                        <span class="name mb-0 text-sm"><?php echo $name?></span>
+                                                        <span class="name mb-0 text-sm"><?php echo $name ?></span>
                                                     </div>
                                                 </div>
                                             </th>
                                             <td>
-                                            <?php echo $cmd?>
+                                                <?php echo $cmd ?>
                                             </td>
                                             <td>
                                                 <span class="badge badge-dot mr-4">
                                                     <?php
-                                                    if(is_null($released)){
+                                                    if (is_null($released)) {
                                                         echo '<i class="bg-warning"></i>
                                                         <span class="status">Unavailable</span>';
                                                     } else {
@@ -86,7 +86,13 @@ include("assets/includes/head.php");
                                                 </span>
                                             </td>
                                             <td>
-                                            <?php echo "<a href='$github' target='_blank' >Link</a>"; ?>
+                                                <?php 
+                                                if (is_null($github)) {
+                                                    echo "No Links";
+                                                } else {
+                                                    echo "<a href='$github' target='_blank' >Link</a>";
+                                                }
+                                                ?>
                                             </td>
                                             <td class="text-right">
                                                 <div class="dropdown">
@@ -116,16 +122,12 @@ include("assets/includes/head.php");
 
                 <script type="text/javascript">
                     $(document).ready(function() {
-                        // $("#sourceinput").on('change keydown paste input', function() {
-                        // 	var searchtext = document.getElementById("sourceinput").value;
-                        // 	$.post("search-tools.php", {
-                        // 		"searchtext": searchtext
-                        // 	}).done(function(data) {
-                        // 		document.getElementById("toolslistkali").innerHTML = data; //Pega a resposta da pagina_que_ira_receber_o_post.php
-                        // 	}).fail(function(error) {
-                        // 		document.getElementById("toolslistkali").innerHTML = error;
-                        // 	});
-                        // });
+                        $("#sourceinput").on("keyup", function() {
+                            var value = $(this).val().toLowerCase();
+                            $("#toolTable tr").filter(function() {
+                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                            });
+                        });
                         $(".filter-button").click(function() {
                             var value = $(this).attr('data-filter');
 

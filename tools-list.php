@@ -18,7 +18,7 @@ include("assets/includes/head.php");
 					<div class="card-header bg-transparent">
 						<h2 class="mb-0">Tools List
 							<button class="btn btn-dark btn-sm float-right" type="button" data-toggle="collapse" data-target="#collapse-filter" style="float: right;">+ Show filters</button>
-							<a class="btn btn-success btn-sm float-right" type="button" href="#" style="float: right;">+ Add tool</a>
+							<a class="btn btn-success btn-sm float-right" type="button" href="add-tool.php" style="float: right;">+ Add tool</a>
 						</h2>
 
 						<div class="p-4">
